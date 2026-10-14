@@ -1,5 +1,5 @@
 // صندوق‌یار — service worker. User data lives in IndexedDB and is never touched here.
-const APP='sandooghyar',V=APP+'-v0.30.1',SHELL=APP+'-shell',RT=APP+'-share';
+const APP='sandooghyar',V=APP+'-v0.30.2',SHELL=APP+'-shell',RT=APP+'-share';
 const ASSETS=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const IDX=()=>new URL('index.html',self.registration.scope).href;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil((async()=>{const c=await caches.open(V);await Promise.all(ASSETS.map(async u=>{try{const r=await fetch(new Request(u,{cache:'reload'}));if(r.ok){await c.put(new URL(u,self.registration.scope).href,r.clone());if(u==='index.html'){const s=await caches.open(SHELL);await s.put(IDX(),r.clone())}}}catch(x){}}))})())});
