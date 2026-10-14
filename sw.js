@@ -1,0 +1,13 @@
+// صندوق‌یار — service worker. User data lives in IndexedDB and is never touched here.
+const APP='sandooghyar',V=APP+'-v0.29.1',SHELL=APP+'-shell',RT=APP+'-share';
+const ASSETS=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
+const IDX=()=>new URL('index.html',self.registration.scope).href;
+self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil((async()=>{const c=await caches.open(V);await Promise.all(ASSETS.map(async u=>{try{const r=await fetch(new Request(u,{cache:'reload'}));if(r.ok){await c.put(new URL(u,self.registration.scope).href,r.clone());if(u==='index.html'){const s=await caches.open(SHELL);await s.put(IDX(),r.clone())}}}catch(x){}}))})())});
+self.addEventListener('activate',e=>e.waitUntil((async()=>{const ks=await caches.keys();await Promise.all(ks.filter(k=>k.indexOf(APP+'-v')==0&&k!==V).map(k=>caches.delete(k)));await self.clients.claim()})()));
+const OFF='<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>صندوق‌یار</title><body style="font-family:Vazirmatn,Tahoma,sans-serif;background:#f5f7f6;color:#1b2420;display:flex;min-height:90vh;align-items:center;justify-content:center;text-align:center;padding:24px"><div><div style="font-size:44px">📶</div><h2>صندوق‌یار</h2><p>برای اولین بار، برنامه را یک بار با اینترنت باز کنید.<br>بعد از آن بدون اینترنت هم کار می‌کند.</p><button onclick="location.reload()" style="font:inherit;padding:10px 22px;border-radius:12px;border:0;background:#17705a;color:#fff">دوباره امتحان کن</button></div></body></html>';
+async function saved(){return (await caches.match(IDX()))||(await caches.match(new URL('./',self.registration.scope).href))}
+self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);
+ if(u.pathname.endsWith('version.json'))return;
+ if(r.mode==='navigate'){e.respondWith((async()=>{const c=await saved();const net=fetch(IDX(),{cache:'no-store'}).then(async x=>{if(x.ok){const t=await x.clone().text();if(t.indexOf("VER='")>0){for(const k of [V,SHELL]){const cc=await caches.open(k);await cc.put(IDX(),x.clone())}}}return x}).catch(()=>null);
+  if(c){e.waitUntil(net);return c}const n=await net;return n||new Response(OFF,{headers:{'Content-Type':'text/html; charset=utf-8'}})})());return}
+ if(u.origin===location.origin||u.hostname==='cdnjs.cloudflare.com'||u.hostname.indexOf('fonts.g')===0){e.respondWith((async()=>{const c=await caches.match(r);if(c)return c;try{const x=await fetch(r);if(x.ok||x.type==='opaque'){const cc=await caches.open(u.origin===location.origin?V:RT);cc.put(r,x.clone())}return x}catch(y){return new Response('',{status:504})}})())}});

@@ -1,0 +1,31 @@
+{
+ "name": "صندوق‌یار",
+ "short_name": "صندوق‌یار",
+ "description": "مدیریت صندوق‌های قرض‌الحسنه و جمعی",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "dir": "rtl",
+ "lang": "fa",
+ "theme_color": "#17705a",
+ "background_color": "#121816",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
