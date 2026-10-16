@@ -1,5 +1,5 @@
 // صندوق‌یار — service worker. User data lives in IndexedDB and is never touched here.
-const APP='sandooghyar',V=APP+'-v0.32.2',SHELL=APP+'-shell',RT=APP+'-share';
+const APP='sandooghyar',V=APP+'-v0.32.3',SHELL=APP+'-shell',RT=APP+'-share';
 const ASSETS=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const IDX=()=>new URL('index.html',self.registration.scope).href;
 const EXT=['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap'];
@@ -9,6 +9,7 @@ const OFF='<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8"><meta 
 async function saved(){return (await caches.match(IDX()))||(await caches.match(new URL('./',self.registration.scope).href))}
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET')return;const u=new URL(r.url);
  if(u.pathname.endsWith('version.json'))return;
+ if(u.pathname.endsWith('.webmanifest')){e.respondWith(fetch(r,{cache:'no-store'}).catch(()=>caches.match(r)));return}
  if(r.mode==='navigate'){e.respondWith((async()=>{const c=await saved();const net=fetch(IDX(),{cache:'no-store'}).then(async x=>{if(x.ok){const t=await x.clone().text();if(t.indexOf("VER='")>0){for(const k of [V,SHELL]){const cc=await caches.open(k);await cc.put(IDX(),x.clone())}}}return x}).catch(()=>null);
   if(c){e.waitUntil(net);return c}const n=await net;return n||new Response(OFF,{headers:{'Content-Type':'text/html; charset=utf-8'}})})());return}
  if(u.origin===location.origin||u.hostname==='cdnjs.cloudflare.com'||u.hostname.indexOf('fonts.g')===0){e.respondWith((async()=>{const c=await caches.match(r);if(c)return c;try{const x=await fetch(r);if(x.ok||x.type==='opaque'){const cc=await caches.open(u.origin===location.origin?V:RT);cc.put(r,x.clone())}return x}catch(y){return new Response('',{status:504})}})())}});
