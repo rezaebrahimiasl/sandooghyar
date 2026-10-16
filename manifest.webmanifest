@@ -2,6 +2,7 @@
  "name": "صندوق‌یار",
  "short_name": "صندوق‌یار",
  "description": "مدیریت صندوق‌های قرض‌الحسنه و جمعی",
+ "id": "./?app=2",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
