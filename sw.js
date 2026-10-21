@@ -1,5 +1,5 @@
 // صندوق‌یار — service worker. User data lives in IndexedDB and is never touched here.
-const APP='sandooghyar',V=APP+'-v0.35.1',SHELL=APP+'-shell',RT=APP+'-share';
+const APP='sandooghyar',V=APP+'-v0.35.2',SHELL=APP+'-shell',RT=APP+'-share';
 const ASSETS=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const IDX=()=>new URL('index.html',self.registration.scope).href;
 const EXT=['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap'];
