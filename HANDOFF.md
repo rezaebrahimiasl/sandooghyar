@@ -33,3 +33,4 @@
 - ۰٫۳۸٫۰: کسری نقدینگی: `cashFix` (یافتن علت/نقد اولیه/تزریق سرمایه/اختلاف حساب)، `cashWhy`، `susAdd` (jv jk:'sus' cash↔sus)، `susBal`، ACC.sus در ترازنامه (بدهی) و کارهای خانه. `anonS/anonOut` خروجی بی‌نام. GUIDE به‌روز + فصل‌های cash/ai/look + `gPrint`. قاعده: با هر قابلیت تازه GUIDE/FAQ را هم به‌روز کن.
 - ۰٫۳۸٫۱: معین تزریق سرمایه: `capRows/capSum/capKN/capPage/capLed/capGt` (tx inj/injret + ops cap/capret، کلید p:pid یا e:نام)؛ اتصال از بیشتر، کاشی خانه (j+CP−CR)، drill('inj')، fop، ردیف cap ترازنامه، پرونده عضو.
 - ۰٫۳۸٫۲: تزریق در tarz (سطر بدهی به سرمایه‌گذاران → capPage(ui.tg)) و اعضا (کاشی mTot + برچسب b.j)؛ capPage(null)=همه.
+- ۰٫۳۹٫۰ (ممیزی، مرحله ۱): cashOf = نقد دفتر (−icOf)؛ jopen بدون نقد اولیه تفاوت را به cash می‌برد (با OC به open)؛ caBal/moin شامل jopen؛ H-JRNL-CASH ساده؛ FMK در addTx/fmo؛ bix() نمایهٔ tx به تفکیک عضو + کش pix/curIdx/lastAll؛ fitOv بدون reflow پیاپی؛ jrnl ۴۰ سند اول؛ YBS open → «مازاد / کسری افتتاحیه»، تهاتر ic در TB.
