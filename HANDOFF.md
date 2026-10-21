@@ -31,3 +31,4 @@
 - ۰٫۳۷٫۰: صفحهٔ آغاز با canvas: `splash(force)/spAnim/splBox/splSet`، `CFG.spl` {font,mode,mv,dir,sp,tr,dur}، قلم‌ها از Google Fonts در صورت انتخاب (SW کش می‌کند)، پیش‌فرض «قرض» و «حسن» دنبال هم روی دایرهٔ بزرگ با ردّ ماندگار؛ تنظیمات کنار «ظاهر برنامه».
 - ۰٫۳۷٫۱: `rvFix/rvSt` وضعیت زندهٔ موارد بررسی (وام منفی، مغایرت ستون اکسل، نام تکراری)؛ rvn/warns/rv از rvSt؛ برطرف‌شده‌ها در details؛ زبانهٔ «مغایرت اکسل» وقتی REF خالی است پنهان.
 - ۰٫۳۸٫۰: کسری نقدینگی: `cashFix` (یافتن علت/نقد اولیه/تزریق سرمایه/اختلاف حساب)، `cashWhy`، `susAdd` (jv jk:'sus' cash↔sus)، `susBal`، ACC.sus در ترازنامه (بدهی) و کارهای خانه. `anonS/anonOut` خروجی بی‌نام. GUIDE به‌روز + فصل‌های cash/ai/look + `gPrint`. قاعده: با هر قابلیت تازه GUIDE/FAQ را هم به‌روز کن.
+- ۰٫۳۸٫۱: معین تزریق سرمایه: `capRows/capSum/capKN/capPage/capLed/capGt` (tx inj/injret + ops cap/capret، کلید p:pid یا e:نام)؛ اتصال از بیشتر، کاشی خانه (j+CP−CR)، drill('inj')، fop، ردیف cap ترازنامه، پرونده عضو.
