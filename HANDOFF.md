@@ -34,3 +34,4 @@
 - ۰٫۳۸٫۱: معین تزریق سرمایه: `capRows/capSum/capKN/capPage/capLed/capGt` (tx inj/injret + ops cap/capret، کلید p:pid یا e:نام)؛ اتصال از بیشتر، کاشی خانه (j+CP−CR)، drill('inj')، fop، ردیف cap ترازنامه، پرونده عضو.
 - ۰٫۳۸٫۲: تزریق در tarz (سطر بدهی به سرمایه‌گذاران → capPage(ui.tg)) و اعضا (کاشی mTot + برچسب b.j)؛ capPage(null)=همه.
 - ۰٫۳۹٫۰ (ممیزی، مرحله ۱): cashOf = نقد دفتر (−icOf)؛ jopen بدون نقد اولیه تفاوت را به cash می‌برد (با OC به open)؛ caBal/moin شامل jopen؛ H-JRNL-CASH ساده؛ FMK در addTx/fmo؛ bix() نمایهٔ tx به تفکیک عضو + کش pix/curIdx/lastAll؛ fitOv بدون reflow پیاپی؛ jrnl ۴۰ سند اول؛ YBS open → «مازاد / کسری افتتاحیه»، تهاتر ic در TB.
+- ۰٫۳۹٫۱ (ممیزی، مرحله ۲): rcpt با balTx (مانده پیش/پس از همین ثبت)، rcptDate، Rl، اقلام هم‌پرداخت (هم at)، rno/prev/rv ثابت در اصلاح ثبت اعضا + rcptFind از txv؛ hpop از TABH؛ BUN برای undo ثبت اعضا؛ ریز ثبت‌ها و «پیشنهادی» در مرور.
