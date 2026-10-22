@@ -5,6 +5,7 @@
 | Application | صندوق‌یار (SandooghYar): Qard al-Hasana fund manager, Persian offline PWA |
 | Version / build | `VER='0.40.1'`; public repo `rezaebrahimiasl/sandooghyar`, commit `afff760`; `version.json` = 0.40.1 |
 | Documentation date | 2026-10-22 |
+| **Update** | Version **0.41.0** implements the R01 fixes FX-1…FX-5 (partial). See `10_R01_REMEDIATION_0.41.0.md`, which also corrects some statements in docs 00–09. Line numbers in docs 00–09 refer to 0.40.1. |
 | Documentation status | **Complete for the code base.** There are evidence gaps for device- and network-dependent behaviour (§4). |
 
 ## 1. Deliverables
@@ -21,6 +22,7 @@
 | `07_CHANGE_GUIDE_AND_DEPENDENCY_MAP.md` | How to change things safely; high-risk shared code; checklists |
 | `08_REQUIREMENTS_AND_OPEN_QUESTIONS.md` | Owner rules vs implementation, conflicts, prioritised policy questions |
 | `09_HANDOVER_MANIFEST.md` | This index |
+| `10_R01_REMEDIATION_0.41.0.md` | Security/backup remediation in 0.41.0, corrections to docs 00–09, executed verification |
 
 ## 2. Files inspected
 
@@ -65,7 +67,7 @@
 6. **Negative loan balances from imported data** remain in the loan account. → doc 04; doc 08 Q2.
 7. **No year-end carry-forward or closing entries** before the first real year close. → doc 08 Q4.
 8. **Profile edits lack field-level history** (owner rule). → doc 06 DEF-06.
-9. **Corrupt-state handling is silent.** → doc 06 HYP-03.
+9. ~~Corrupt-state handling is silent.~~ Fixed in 0.41.0: recovery mode, no overwrite, no upload. → doc 10 FX-2.
 10. **The GitHub token and AI key are in localStorage** (the token is sealed only when the lock is on). → doc 05 PRV-04/05.
 
 ## 5. Recommended order for future auditing and repairs
