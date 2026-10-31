@@ -5,6 +5,9 @@
 - **[TEST]**: covered by an existing unit test (`tests/*.js`).
 - **[STATIC]**: derived from reading the code only.
 
+
+> **Data authority rule (owner, 2026-10-28).** The current app's persisted data on the owner's device is the authoritative record. The initial 1405 Excel workbook contained errors and is **historical and non-authoritative**: it must never be used to overwrite, correct or reconcile current records, or to declare them wrong, without independent verification. Any figure in this document derived from that workbook (or from the dev-only seed built from it) is labelled **[EXCEL-HIST]** and says nothing about the current real data, which was never available to the documentation work.
+
 **Units.** All amounts are million toman (میلیون تومان). «۱» means 1,000,000 toman.
 
 ## Synthetic scenario used in [EXEC] examples
@@ -75,7 +78,7 @@ Example [EXEC] after month 0:
 - B: `{s:5, l:6}`, which is 8−2.
 
 Edge cases:
-- `l` can be **negative** if imported data has over-payments. New entries prevent this (R-LN-02). Reports show it as an «اضافه‌پرداخت قسط» reconciliation row (`rep` L977), and the review queue flags it (`مانده وام منفی`).
+- `l` can be **negative** if imported data has over-payments ([EXCEL-HIST]: observed in the workbook seed; whether any exist in the current real data is unknown). New entries prevent this (R-LN-02). Reports show it as an «اضافه‌پرداخت قسط» reconciliation row (`rep` L977), and the review queue flags it (`مانده وام منفی`).
 - `rcl` with `from:'inst'` **increases** the loan, because it reverses installment.
   - Example [EXEC]: B in month 1 after the correction inst→sav 1 has `{s:6, l:1, c:1}`.
 
@@ -90,7 +93,7 @@ Edge cases:
 |---|---|---|---|---|
 | R-LN-01 | A new loan increases `l`. A metadata record goes to `S.loans` with `kind:'جدید'` and `term` (default 10, allowed 1–60). | `sub` L126, `bsave` L381 | A: loan 5 → l=5 | EXEC |
 | R-LN-02 | Installment room = max(0, min(outstanding at end of the previous month, minimum future outstanding)). An installment above the room is **split**: room goes to `inst`, the excess goes to `credit` with note «مازاد قسط». | `loanRoom` L1213; `sub` L126 (`if(a>room)add('credit',…)`); same in `bsave` | B owes 6 in month 1 and pays 7 → inst 6 + credit 1 → `{l:0, c:1}` | EXEC (manual equivalent), TEST (v31test) |
-| R-LN-03 | Suggested installment = min(outstanding, g). g is: last new loan amount ÷ its term; else the agreed Excel installment `m.qs`; else the last installment amount; else blank. | `sugg` L648 | A month 1: 5/10 = **0.5** | EXEC |
+| R-LN-03 | Suggested installment = min(outstanding, g). g is: last new loan amount ÷ its term; else the agreed installment `m.qs` (originally from the [EXCEL-HIST] workbook; never back-filled from it after the data-authority fix); else the last installment amount; else blank. | `sugg` L648 | A month 1: 5/10 = **0.5** | EXEC |
 | R-LN-04 | Remaining installments = ceil(outstanding / g); end month = last month of the fund + remaining | `loanEst` L640 | outstanding 4.5, g 0.5 → 9 installments | STATIC |
 | R-LN-05 | A new loan while a balance is outstanding needs double confirmation | `bsave` (`dbl`), `fi` warning | — | STATIC |
 | R-LN-06 | A wrong loan is voided by an `lrev` transaction plus `loans[].void=true` | `lvoid`/`lvoidGo` L1026 | — | STATIC |
@@ -160,7 +163,7 @@ Example [EXEC]:
   - Dr cash / Cr `sus`.
 - `susBal` gives the outstanding balance. Voiding the voucher restores the shortfall.
 - In the balance sheet, `sus` is a **liability**.
-- Tag: EXEC (0.38.0 test: cash series became `[0, 15.3, 36.8]` from `[−107.2, …]`; balance sheet balanced).
+- Tag: EXEC (0.38.0 test on the [EXCEL-HIST] dev seed, not real data: cash series became `[0, 15.3, 36.8]` from `[−107.2, …]`; balance sheet balanced).
 
 ## R-JRN — Derived double-entry journal
 
@@ -259,7 +262,7 @@ Location: `ydata` L1304. Tag: EXEC (VA A3).
 ## Inconsistencies and ambiguities (for the owner to decide; see doc 08)
 
 1. **Assumed opening cash.** «پس‌انداز اولیه − وام اولیه» is a modelling assumption. It is now used consistently, but it can hide a real opening shortfall until real opening cash is recorded.
-2. **Negative loan balances from imported data** remain loans with a negative sign. New entries use credit instead.
+2. **Negative loan balances from imported data** ([EXCEL-HIST]) remain loans with a negative sign. Whether the current real data has any must be checked on the device, not inferred from the workbook. New entries use credit instead.
 3. **On-time payment** is month-presence based, not date based.
 4. **No interest, fees or penalties.** This is consistent with Qard al-Hasana. The «درآمد» account exists only for bank profit and the like.
 5. **`Rl` ignores the sign** of the amount.

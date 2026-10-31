@@ -8,6 +8,8 @@
 | **Update** | Version **0.41.0** implements the R01 fixes FX-1…FX-5 (partial). See `10_R01_REMEDIATION_0.41.0.md`, which also corrects some statements in docs 00–09. Line numbers in docs 00–09 refer to 0.40.1. |
 | Documentation status | **Complete for the code base.** There are evidence gaps for device- and network-dependent behaviour (§4). |
 
+> **Data authority rule (2026-10-28):** the current app data is authoritative; the initial Excel workbook is historical, contained errors and is non-authoritative. Figures marked [EXCEL-HIST] in docs 03/04/08 come from the workbook-based dev seed, not from the real data (which was never available). See doc 08 REQ-21.
+
 ## 1. Deliverables
 
 | File | Purpose |
@@ -30,7 +32,7 @@
 |---|---|---|
 | `index.html` (public) | ✓ | Full static read of key areas; automated function map (681 functions with line numbers); executed in Playwright |
 | `sw.js`, `manifest.webmanifest`, `version.json`, `README.md`, `HANDOFF.md` | ✓ | Read |
-| Dev source `sandooghyar.html` (private, contains real data) | ✓ | Used for unit tests. **Not reproduced**; no data quoted. |
+| Dev source `sandooghyar.html` (private; contains the [EXCEL-HIST] workbook constants) | ✓ | Used only as a test fixture (`wbFixture`). **Not reproduced**; no data quoted. Not the authoritative data. |
 | `build.py`, `mktest.py`, `tests/*.js` (21), `browser/smoke.js`, `browser/run.sh` | ✓ (private dev env) | Read and executed |
 | Owner's real data on the phone (IndexedDB) | ✗ | Unavailable by design |
 | GitHub backup repo (private) | ✗ | Not accessed |
@@ -59,12 +61,12 @@
 
 ## 4. Ten highest-priority risks
 
-1. **Opening-cash assumption** (Σ opening savings − Σ opening loans). It shapes every cash and shortfall figure until real opening cash is recorded. → doc 04 R-CASH-01; doc 08 Q1.
+1. **Opening-cash assumption** (Σ opening savings − Σ opening loans). It shapes every cash and shortfall figure until real opening cash is recorded. (Shortfall sizes seen so far are [EXCEL-HIST].) → doc 04 R-CASH-01; doc 08 Q1.
 2. **No at-rest encryption** of business data; the PIN lock is a UI gate. → doc 05 SEC-02.
 3. **Single storage key and single device.** Data loss if browser storage is cleared and no recent backup exists. → doc 03 §1; doc 05 §8.
 4. **CDN scripts without SRI**, including an older SheetJS that reads user files. → doc 05 EXT-01/02.
 5. **Calculation-core coupling and cache heuristics** (`bal`/`bix`, `cashOf`, `jdocs`). A careless change breaks every report. → doc 02 §5; doc 06 HYP-01; doc 07 §1.
-6. **Negative loan balances from imported data** remain in the loan account. → doc 04; doc 08 Q2.
+6. **Negative loan balances from imported data** ([EXCEL-HIST]; presence in current real data unverified) remain in the loan account. → doc 04; doc 08 Q2.
 7. **No year-end carry-forward or closing entries** before the first real year close. → doc 08 Q4.
 8. **Profile edits lack field-level history** (owner rule). → doc 06 DEF-06.
 9. ~~Corrupt-state handling is silent.~~ Fixed in 0.41.0: recovery mode, no overwrite, no upload. → doc 10 FX-2.
@@ -95,5 +97,5 @@
 - [ ] `bal` iterates `bix().get(mid)`; `bixTouch` exists.
 - [ ] `rcpt` uses `balTx`; `rcptFind` resolves via `txv`.
 - [ ] `opSave` wraps `opSave0`; `OPREP` exists; `opView`/`opEdit` exist.
-- [ ] Unit tests: 21 suites, all `FAIL 0`. Smoke test: `errors []`.
+- [ ] Unit tests: 25 suites (incl. `authtest.js`, `rcvtest.js`, `fintest.js`, `rsitest.js`), all `FAIL 0`. Smoke test: `errors []`. Browser regressions `recovery.js`, `idbfail.js`, `xlroundtrip.js`, `csp.js` pass on the public build.
 - [ ] Synthetic scenario (doc 04) reproduces: month-0 cash 5, month-1 cash 18.8, with opening cash 14.8, capital balance 6, balance sheet balanced.

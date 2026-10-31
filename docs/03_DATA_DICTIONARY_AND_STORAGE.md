@@ -2,6 +2,8 @@
 
 There is **no database schema.** The app keeps one JavaScript object `S` in memory and persists it as one JSON string. Field lists below were extracted from object literals and assignments in `index.html` (static) and from the shape of the seeded state (executed). All examples are **synthetic**.
 
+> **Data authority rule (owner, 2026-10-28).** The current app's persisted data on the owner's device is the authoritative record. The initial 1405 Excel workbook contained errors and is **historical and non-authoritative**: it must never be used to overwrite, correct or reconcile current records, or to declare them wrong, without independent verification. Any figure in this document derived from that workbook (or from the dev-only seed built from it) is labelled **[EXCEL-HIST]** and says nothing about the current real data, which was never available to the documentation work.
+
 ## 1. Storage technology and keys
 
 ### 1.1 Data storage
@@ -12,7 +14,7 @@ There is **no database schema.** The app keeps one JavaScript object `S` in memo
 | same | `sandooghyar.v2.cfg` | Device settings `CFG` (JSON) | `cfgSave()` L712 |
 | same | `sandooghyar.v2.s1`, `.s2`, `.s3` | Rolling snapshots `{at, rev, json, label}`. `s1` is newest. Taken at boot if older than 6 h and every 25 saves. | `snapshot`/`snapObj` L724–725 |
 | same | `sandooghyar.v2.corrupt` | Raw JSON that failed to parse or validate at load | `load()` L80 |
-| localStorage (fallback mirror) | same keys | Used when IndexedDB is unavailable. `LS` shim, L39–48. | `LS` |
+| localStorage (fallback mirror) | same keys | Read when IndexedDB cannot be opened (`LS` shim, L39–48). Since 0.42.0 such a run is **read-only recovery** (`RCV='idb'`): no record is written to the fallback, so nothing entered there can be hidden when IndexedDB works again. Legacy data is copied into IndexedDB only when IndexedDB has no main key. | `LS` |
 
 ### 1.2 Secrets and per-device settings
 
@@ -119,7 +121,7 @@ erDiagram
 | `start` | string | Membership date (validated by `vdate`) |
 | `status` | `فعال` \| `غیرفعال` \| `خارج‌شده` \| `متوفی` | |
 | `os`, `ol` | number \| null | **Opening** savings and loan, in million toman, at the start of 1405 or the fund start |
-| `qs` | number \| null | Agreed monthly installment from Excel; used by `sugg` |
+| `qs` | number \| null | Agreed monthly installment; used by `sugg`. Originally imported from the [EXCEL-HIST] workbook; since the data-authority fix it is never back-filled from Excel (missing → `null`). |
 | `note` | string | |
 | `succOf`, `rel`, `succDate`, `succNote` | | Succession link to a deceased member |
 
@@ -173,7 +175,7 @@ A copy of the tx plus `vr` (reason) and `vat` (time). Created by `txVoid(L,why)`
 | Collection | Fields | Notes |
 |---|---|---|
 | `deps[]` — واریزی اعلام‌شده | `{id:'D…', fid, mid, name, amt, date, ca, trk, note, at, al:[{tx, a}], void, vr}` | `depRem(d) = amt − Σal.a` |
-| `review[]` — موارد بررسی | `{id:'R…', kind, fid, mid, per, status:'نیازمند بررسی'\|'اصلاح‌شده'\|'تأییدشده', src:{sheet, cell, excel}, app, msg, res, resNote}` | Effective status is derived live (`rvSt` L524) |
+| `review[]` — موارد بررسی | `{id:'R…', kind, fid, mid, per, status:'نیازمند بررسی'\|'اصلاح‌شده'\|'تأییدشده', src:{sheet, cell, excel}, app, msg, res, resNote}` | Effective status is derived live (`rvSt` L524). Items with `src.sheet:'1405'` («مانده صندوق منفی در اکسل», «مغایرت مانده وام با ستون اکسل», …) are [EXCEL-HIST] notes about the workbook, not findings about current data. |
 | `audit[]` | `{t:ISO, a:action, d:detail, h:fnv-hash}` | Newest first (`unshift`); hash chained to the previous `h` |
 | `opens[]` | `{id:'D…', fid, date, reason, at, items}` | Opening-balance change documents (`applyOpening` L829) |
 | `queue[]` | `{id:'Q…', mid, amt, note, at, status:'در صف'\|…, lot}` | Loan queue |
@@ -197,7 +199,13 @@ Caches: `BIX` (per-member tx index), `PXC` (period index), `LAX` (`lastAll`), `C
 - `migrate(o)` (L713):
   - adds missing arrays and objects;
   - runs `sanState` (strips `<` and `>` from names and notes);
-  - back-fills `mems.qs` from the `D` constant, which is empty in the public build.
+  - sets a missing `mems.qs` to `null`. (Before the data-authority fix it back-filled `qs` from the Excel constant `D`; removed.)
+- `seed()` always returns an **empty** dataset (funds only). The Excel constants `D`/`REF`/`CASH` exist only in the private dev source and are read only by:
+  - `wbFixture()`, a test-only fixture with no call site in the app;
+  - `rec()`, the informational «مقایسه با اکسل اولیه» page (neutral styling, no correction action; hidden in the public build).
+- Regression test `tests/authtest.js` wraps `D`/`CASH` in recording proxies (indexed access, length, iteration, methods) and asserts that seed, migrate, load, save, `rec` and recovery «شروع از نو» never read them or change persisted data from them.
+- **Pre-restore integrity check** (`rsInteg`, used by `rsAsk` for JSON, encrypted, cloud, snapshot, repair and Excel restores): reuses the Excel validator by running `fromTables(tables(d))` on the incoming state, plus a string/no-whitespace ID check. Blocking (restore refused, current data untouched): empty, malformed or duplicate IDs; invalid numbers; memberships with missing person or fund; transactions with invalid type, amount, period, membership/fund mismatch, incomplete transfer or correction; loans, fund events or vouchers with broken references; broken voided or closing records. Warnings (typed «جایگزین کن» required): person name or phone issues, membership status, cash-account metadata, and any issue (including empty or duplicate IDs) in messages, review notes, opening-change documents, loan queue or deposits. Sync adoption paths (`cbkPeek` other-device copy, device link `lnkAsk`, account sync `rmAdopt`) refuse a copy with blocking errors and keep current data. Nothing is generated, guessed, deleted or repaired. Outcome (counts only) goes to the device recovery log `sandooghyar.v2.rlog` (50 entries) and, on replace, to the restored data's audit. Test: `tests/rsitest.js`.
+- Regression tests `tests/rcvtest.js` and `browser/idbfail.js` assert that recovery cannot be ended, and no restore, start-fresh, undo, sync adoption, device link, save, pagehide or visibility write reaches the main key while IndexedDB has failed; «شروع از نو» acts only in recovery mode and only after the typed phrase.
 - There are no numbered schema migrations. New optional fields are read defensively, for example `o.ops||[]` or `x.rno||x.id`.
 - **Deletion policy.** Business records are not hard-deleted:
   - transactions are voided into `txv`;

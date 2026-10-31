@@ -24,6 +24,7 @@
 | REQ-18 | Manager guide always in the app and up to date | Implemented (`GUIDE`, print); kept current by process (manual) |
 | REQ-19 | Configurable, attractive splash animation of «قرض» and «حسن» | Implemented 0.37.0 |
 | REQ-20 | Periodic independent deep review; fixes only after owner approval | Done 2026-10-21; all 17 items approved and fixed |
+| REQ-21 | **Data authority (2026-10-28).** The current app data is authoritative. The initial Excel workbook had errors and is historical and non-authoritative; never overwrite, correct, reconcile or judge current records from it without independent verification; never silently modify current data to match it; no import/restore/migrate/overwrite of real data during inspection | Implemented in the dev source after 0.41.0 (unpublished): `seed()` empty; `migrate` no Excel back-fill; `rec` informational only; `wbFixture` test-only; regression `tests/authtest.js` |
 
 ## 2. Requirements inferred from the implementation (not explicitly stated)
 
@@ -49,8 +50,8 @@
 
 | # | Question | Affects | Current behaviour |
 |---|---|---|---|
-| Q1 | **Opening cash.** Should real opening cash be mandatory per fund, instead of assuming «Σ opening savings − Σ opening loans»? | Correctness of every cash and shortfall figure | Assumed until recorded; one fund currently shows a large assumed shortfall |
-| Q2 | **Negative loan balances from Excel** (over-payments in the source data): convert to member credit, savings, or leave as negative loan? | Balance sheet loans, credit | Left negative; flagged in review; user fixes case by case |
+| Q1 | **Opening cash.** Should real opening cash be mandatory per fund, instead of assuming «Σ opening savings − Σ opening loans»? | Correctness of every cash and shortfall figure | Assumed until recorded. The «large assumed shortfall in one fund» seen during documentation came from the [EXCEL-HIST] dev seed, **not** from the current real data |
+| Q2 | **Negative loan balances** seen in the [EXCEL-HIST] workbook (over-payments in that file): if any exist in the current real data, convert to member credit, savings, or leave as negative loan? | Balance sheet loans, credit | Left as recorded; never changed to match Excel; any change only by a documented correction approved by the owner |
 | Q3 | Should member credit (طلب) be applied automatically to the next installment, or refunded only on request? | Loans, credit, cash | Manual (`refc` or correction) |
 | Q4 | Year-end: should income/expense (`res`) be closed into equity each year, and should balances carry forward as new opening documents? | Balance sheet presentation across years | Cumulative `res`; no closing entries; locks only |
 | Q5 | Definition of «به‌موقع» (on time): by date within the month, or presence in the month? | Statistics, credit score | Presence in the month |
@@ -76,6 +77,6 @@
 
 ## 6. Decisions needed before safe changes
 
-1. Q1 and Q2: they change reported cash and loans.
+1. Q1 and Q2: they change reported cash and loans. Assess them on the current real data (e.g. via the anonymised export), not on the Excel workbook.
 2. Q4: year-end carry-forward is needed before the first real year close of 1405, which is due after Esfand 1405.
 3. Q8: if the threat model changes (shared device), encryption at rest becomes a prerequisite.
