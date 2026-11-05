@@ -120,3 +120,4 @@ Legend: **R** request · **D** decision or approval · **C** correction · **X**
   - Applies to: events, schedules, overdue, profiles and timelines, statements, fund reports, injections and transfers, voided documents, reconciliation and audit.
   - Must combine with fund selection, give consolidated and per-fund results, persist, use local Jalali boundaries, distinguish historical from current balances, use due and payment dates for overdue, never change data, compare two periods, and use shared logic.
   - Tests for boundaries and leap Esfand are required, and the requirement is added to the audit and release checklist. → 0.48.0.
+- **Result** 2026-11-05 23:26 UTC — 0.48.0 deployed (`00a290e`; Pages deployment success).

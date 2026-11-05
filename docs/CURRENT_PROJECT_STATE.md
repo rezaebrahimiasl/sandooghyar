@@ -1,15 +1,12 @@
 # Current project state — SandooghYar
 
-Last verified: **2026-11-05**, against Git, the source and the test runs listed below. If anything here disagrees with `git log` or `index.html`, Git and the source win; update this file.
+Last verified: **2026-11-06**, against Git, the source and the test runs listed below. If anything here disagrees with `git log` or `index.html`, Git and the source win; update this file.
 
 ## Versions and commits
-- **Production version:** 0.47.0
-- **Release commits:**
-  - `203729c` — 0.47.0 app + docs;
-  - `a80be83` — docs;
-  - `fa1da94` — review fixes. This is the deployed app commit.
-  - Later commits on `main` are documentation only.
+- **Production version:** 0.48.0
+- **Release commit:** `00a290e` — 0.48.0 (deployed). Later commits on `main` are documentation only.
 - **Previous releases:**
+  - 0.47.0 `fa1da94`
   - 0.46.1 `d44850f`
   - 0.46.0 `750ac84`
   - 0.45.0 `d12ae0e`
@@ -21,40 +18,49 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
   - Tag `v0.42.0` is local only; tag pushes were rejected by the environment's proxy.
 - **Repository:** https://github.com/rezaebrahimiasl/sandooghyar (public). Contents: the built app (`index.html`, `sw.js`, `version.json`, manifest, icons) and all documentation.
 - **Development source:** `sandooghyar.html`, with `build.py`, `mktest.py`, `runall.sh`, `tests/`, `browser/` and `tools/`.
-  - It is in the private package `sandooghyar-private-0.47.0.zip`, not in the repo (decision D-24 pending).
+  - It is in the private package `sandooghyar-private-0.48.0.zip`, not in the repo (decision D-24 pending).
   - Its SHA-256 is in the "Packages" section below.
 
 ## Deployment
 - **Hosting:** GitHub Pages, from `main` at the repo root; `.nojekyll` is present.
 - **URL:** https://rezaebrahimiasl.github.io/sandooghyar/
-- **Verification (2026-11-05 19:20 UTC):**
-  - GitHub Actions run 42092888490 («pages build and deployment», head `fa1da94`): completed / **success**.
-  - Deployment 7583058467, environment `github-pages`, status **success**, URL https://rezaebrahimiasl.github.io/sandooghyar/.
-  - `version.json` on `main` = 0.47.0.
-  - Fetching the live github.io URL directly was blocked from the build environment, so the served bytes were not read back.
+- **Verification (2026-11-05 23:26 UTC):**
+  - GitHub Actions run 42129123034 («pages build and deployment», head `00a290e`): completed / **success**.
+  - Deployment 7588001341 (`github-pages`): status **success**.
+  - The live github.io URL itself cannot be fetched from the build environment.
 - **On phones:** an installed app picks up the new version through `version.json` / `upd()` the next time it opens online.
 
-## Tests (last full run on the 0.47.0 candidate)
-- `./runall.sh` on the release candidate (2026-11-05):
-  - **unit tests:** 31 suites, PASS 613 / FAIL 0 (final, after the review fixes);
-  - **build:** 0.47.0; privacy strip 1/1/1; CSP present;
-  - **browser tests:** smoke (no errors, offline reload ✓), recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp (0 violations, foreign host refused), upgrade from production 0.46.1 (`d44850f`) → 0.47.0 1/1 (run explicitly), offline 16/16.
-- **Fresh-path check of the private package:** the build is byte-identical to `public/`; 31 suites PASS 613 / FAIL 0; 0 fixture-name leaks; no keys or tokens. Placeholders such as `github_pat_` in the UI hint and synthetic test phone numbers are expected.
-- **Independent audit** (separate agent, synthetic data): 0 Critical, 3 Major, 4 Minor, 2 Cosmetic. All Major and five of the Minor/Cosmetic items are fixed; see DEVELOPMENT_JOURNAL.
-- **Independent review of the 0.47 changes:** a second separate agent found 0 Critical, 2 Major and 5 Minor issues; all are fixed and covered by tests (DEVELOPMENT_JOURNAL).
-- **Mobile check:** 390×800 Chromium; the new pages (fund health, reconciliation, multi-fund events, loan portfolio, member profile with schedule, timeline, forecast, reports) showed no JavaScript errors and no horizontal overflow; back navigation closed the sheet.
-- **Not tested:** a real Android device; real GitHub sync and real AI providers (mocked in the tests); a real IndexedDB failure on a phone; rollback to an older version.
+## Tests (final run on 0.48.0)
+- `./runall.sh`:
+  - **unit tests:** 32 suites, PASS 672 / FAIL 0;
+  - **build:** 0.48.0; privacy strip 1/1/1; CSP present;
+  - **browser tests:** smoke (no errors, offline reload ✓), recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp OK, offline 16/16.
+- **Explicit upgrade** from production 0.47.0 (`fa1da94`) → 0.48.0: PASS.
+- **Date filtering (D-28):** `tests/v48test.js` 59/0. It covers:
+  - month, year and leap-Esfand boundaries;
+  - week; custom ranges;
+  - Tehran local-day timestamps; `gJ` = `Intl` for every day 2016–2032;
+  - combined fund + date filters;
+  - statement balances;
+  - historical overdue;
+  - no mutation.
+- **Independent reviews:**
+  - 0.47 audit + 0.47 change review: all Critical/Major fixed;
+  - 0.48 date-filter review: 5 Major + 9 Minor, all addressed.
+
+  See DEVELOPMENT_JOURNAL.
+- **Mobile check:** 390×800, no JS errors, no horizontal overflow.
+- **Fresh-path package check:** the build is byte-identical to the deployed `index.html`; 32 suites PASS 672 / FAIL 0.
+- **Not tested:** a real Android device; real GitHub sync and AI providers; a real IndexedDB failure on a phone; rollback.
 
 ## Packages
 | Package | SHA-256 |
 |---|---|
-| `sandooghyar-private-0.47.0.zip` (dev source with pseudonymised fixture, tests, tools, docs, public build) | `4e79a4883a4cb9e9b8f99c08a9f078faf3c9d87655f97d8678d06145a384cafe` |
-| `sandooghyar-public-0.47.0.zip` (exactly the published files) | `bf64c301e11ee59f62c6f3687d1d57dc2e6d99c56a6a55d4864bc1622502caa6` |
+| `sandooghyar-private-0.48.0.zip` | `2ffe2d3c8c69040f248c8450541d929a00a6166dad7d40bf076296202f4db06e` |
+| `sandooghyar-public-0.48.0.zip` | `ee0abd7369c7c6a0480b3dd162ddcba494163022d0cd46c742000c33bd7ff11f` |
 
 - Each package contains `SHA256SUMS.txt` for its files.
-- The packages were built from deployed commit `fa1da94` and checked from a fresh path:
-  - `index.html` and `sw.js` are byte-identical to the deployed files;
-  - 31 suites PASS 613 / FAIL 0.
+- The packages were built from deployed commit `00a290e`.
 - Docs committed after the packages, such as this deployment section, are authoritative in the repo.
 - **OneDrive mirror:** not available. No OneDrive connection exists in the build environment (D-27).
 
@@ -71,10 +77,11 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 - Build and test scripts contain hard-coded paths (see HANDOFF §7).
 
 ## Outstanding work / next task
-1. **Owner:** install or update 0.47.0 on the phone. Check:
+1. **Owner:** install or update 0.48.0 on the phone. Check:
    - offline launch;
    - backup and restore;
-   - a member's «📅 برنامهٔ اقساط».
+   - a member's «📅 برنامهٔ اقساط»;
+   - a date range in «گزارش‌ها».
    
    Then set «تعیین قسط ماهانه» for opening loans that should have a schedule.
 2. **Owner decision D-24:** where to keep the development source (a private repo is recommended).

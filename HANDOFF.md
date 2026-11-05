@@ -3,7 +3,7 @@
 > **نقطهٔ شروع برای هر دستیار یا مهندس تازه:** [`PROJECT_MASTER_CONTEXT.md`](PROJECT_MASTER_CONTEXT.md) و [`docs/AI_CONTINUATION_GUIDE.md`](docs/AI_CONTINUATION_GUIDE.md). وضعیت دقیق نسخه و commit در [`docs/CURRENT_PROJECT_STATE.md`](docs/CURRENT_PROJECT_STATE.md) است و بر این بخش مقدم است.
 
 ## وضعیت فعلی (۲۰۲۶-۱۱-۰۵) — مرجع همین بخش است
-- **نسخهٔ پایدار:** ۰٫۴۷٫۰ روی `main` (۰٫۴۶٫۱ = `d44850f`؛ ۰٫۴۶٫۰ = `750ac84`؛ ۰٫۴۵٫۰ = `d12ae0e`؛ ۰٫۴۴٫۰ = `c3e75a7`؛ نقطهٔ برگشت ۰٫۴۲٫۰ = `b29e7ab`). منبع: `sandooghyar.html` در بستهٔ توسعه.
+- **نسخهٔ پایدار:** ۰٫۴۸٫۰ روی `main` (۰٫۴۷٫۰ = `fa1da94`؛ ۰٫۴۶٫۱ = `d44850f`؛ ۰٫۴۶٫۰ = `750ac84`؛ ۰٫۴۵٫۰ = `d12ae0e`؛ ۰٫۴۴٫۰ = `c3e75a7`؛ نقطهٔ برگشت ۰٫۴۲٫۰ = `b29e7ab`). منبع: `sandooghyar.html` در بستهٔ توسعه.
 - **ساخت:** `python3 build.py` → `site/{index.html,sw.js,version.json}` (داده‌های اکسل حذف می‌شوند؛ CSP؛ PWA=true). **آزمون:** `./runall.sh` (۳۱ مجموعه آزمون واحد + آزمون‌های مرورگری: smoke، recovery، idbfail، idbdur، syncinteg، xlroundtrip، csp، upgrade، offline).
 - **داده:** دادهٔ فعلی برنامه روی گوشی مرجع است. اکسل اولیه فقط fixture آزمون است (`wbFixture`) و برنامه با دادهٔ خالی شروع می‌شود.
 - **ذخیره (۰٫۴۳+):** صف نوشتن پایدار IndexedDB با نسل‌بندی کلید و تراکنش اتمی؛ پیام موفقیت فقط بعد از commit؛ تلاش دوباره و حالت failed؛ نشانگر «در حال ذخیره / ذخیره شد / ذخیره نشد» (سند ۱۱).

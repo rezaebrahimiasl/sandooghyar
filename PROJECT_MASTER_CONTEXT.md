@@ -55,4 +55,4 @@
 7. Keep these documents synchronised after every meaningful interaction (D-23).
 
 ## Current status (one line)
-0.47.0 is the production version on GitHub Pages. See [CURRENT_PROJECT_STATE](docs/CURRENT_PROJECT_STATE.md) for exact commits, tests and the next task.
+0.48.0 is the production version on GitHub Pages. See [CURRENT_PROJECT_STATE](docs/CURRENT_PROJECT_STATE.md) for exact commits, tests and the next task.
