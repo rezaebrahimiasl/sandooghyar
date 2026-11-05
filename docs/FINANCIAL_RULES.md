@@ -177,3 +177,38 @@ How each transaction type changes the balance:
 - `anomList` — duplicates, amounts > 3× the member median, overdue loans, negative cash.
 - `fhealth` — indicators with thresholds in `FHT`. Dormant members are yellow at most.
 - None of these write data.
+
+## 11. Date-range filtering (0.48.0) — reporting rules
+- **One shared engine** (`dfRng`, `dfHit`, `dfF`, `dfAsOf`, `dfMonths`, `dfCmpR`, `dfBar`). Pages must reuse it, not build their own date filters.
+- **Two filter states**, both remembered (`CFG.uk`):
+  - `ui.df` for reports;
+  - `ui.dfm` for member pages: statement, schedule table, profile and timeline.
+
+  The filters combine with the shared fund selection (`rgF`).
+- **Calendar.**
+  - Jalali day numbers (`jdn`/`njd`): 1300/01/01 = 1. Leap years come from `jLeap`, so Esfand 30 exists only in leap years.
+  - "Today" is the device's local date (`Intl` Persian calendar). Timestamps are converted to the local day with `atJ`, never with UTC dates.
+  - Weeks start on Saturday.
+- **Presets.**
+  - Day-based: today, yesterday, current week (Sat–Fri).
+  - Month-based: current and previous month, last 3 and last 6 months (whole months including the current one).
+  - Year-based: current and previous year.
+  - Also: all history, and a custom range (start and/or end; swapped if reversed).
+- **Comparison** (`dfCmpR`):
+  - "previous period" has the same length; month-aligned ranges shift by whole months;
+  - "same period last year" clamps Esfand 30 to 29.
+- **Effective date of a record:**
+  1. its recorded day (`date`);
+  2. otherwise its accounting month — a month-only record is in range only when the **whole month** is inside the range;
+  3. records in partially covered months are excluded **and counted** (`dfPT` warning);
+  4. otherwise (audit, voids, queue, messages) the local day of its timestamp. Voided documents use the void time.
+- **Monthly views** (cash flow, reconciliation) use the months that overlap the range; the page says so.
+- **Historical balances** use the end month of the range (`dfAsOf`). They are labelled "تاریخی" / «در پایان <ماه>», and shown next to the **current** balance:
+  - statement: opening balance before the range and closing balance at the end of the range;
+  - loan portfolio: as-of month and current outstanding column;
+  - profile;
+  - schedule arrears at a past month;
+  - injection balances.
+- **Overdue at a date** = actual outstanding at that month (payments recorded up to that month) − scheduled outstanding (dues up to that month).
+- **Filters never change records.** A test asserts that `S` is unchanged after rendering every filtered page.
+- **Always current, never filtered:** the alert centre, fund health, the forecast projection and the anomaly list.

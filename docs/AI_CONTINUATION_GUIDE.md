@@ -56,6 +56,20 @@ grep -o "VER='[0-9.]*'" index.html | head -1; cat version.json
    - fetch `https://rezaebrahimiasl.github.io/sandooghyar/version.json` when reachable.
 6. Rollback: `git revert <commit>` and push. Never rewrite history. Phones keep their data across code rollbacks.
 
+## 5a. Release checklist (every release)
+- [ ] `./runall.sh`: all unit and browser suites PASS, FAIL 0.
+- [ ] Explicit upgrade test from the **production** version (`browser/upgrade.js` with `git show <prod>:index.html`).
+- [ ] Financial identities: reconciliation (`reconN()==0` on test states); trial balance; balance sheet.
+- [ ] **Date filtering (D-28):**
+  - `tests/v48test.js` passes: month and year boundaries, leap Esfand, custom ranges, week, local-day timestamps, combined fund + date filters;
+  - new report pages reuse `dfBar` / `dfHit` / `dfAsOf`;
+  - historical vs current balances are labelled;
+  - filters do not change `S`.
+- [ ] Independent review by a separate reviewer of the changes, with Critical and Major items fixed before publishing.
+- [ ] Mobile check at 390 px: no JS errors, no horizontal overflow, back button one step.
+- [ ] Public build privacy (fixture stripped); packages from a fresh path; SHA-256 recorded.
+- [ ] Docs synchronised (§6); `tools/doccheck.py` OK; deployment verified (Actions run + deployment status).
+
 ## 6. Keep project memory synchronised (permanent requirement D-23)
 After every meaningful interaction:
 - Append to `docs/USER_INTERACTION_HISTORY.md`.

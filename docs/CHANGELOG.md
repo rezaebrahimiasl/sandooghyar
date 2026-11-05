@@ -3,6 +3,19 @@
 - Versions ≤ 0.40 are summarised from Git commit titles; see `git log` for details.
 - The in-app «تازه‌ها» list (`WHATS_NEW` in the source) has user-facing notes per version.
 
+## 0.48.0 — 2026-11-06
+- **Shared Jalali date-range filter**, combined with the multi-fund selection:
+  - presets: today, yesterday, week, current/previous month, 3/6 months, current/previous year, all, custom;
+  - comparison with the previous period or the same period last year.
+- **Applied to:**
+  - multi-fund financial events (period flows per fund and consolidated, with comparison);
+  - schedule table and payment history;
+  - historical and current overdue (`lport(fid,at)`);
+  - member profile and timeline; member statement (opening and closing at the range edges);
+  - cash flow (consolidated and per fund, with comparison); reconciliation (range months);
+  - injections; inter-fund transfers; voided documents (by void time); audit log (by local day).
+- **New test suite:** `tests/v48test.js` (month and year boundaries, leap Esfand, custom ranges, week, Tehran local-day timestamps, combined fund + date filters, no mutation).
+
 ## 0.47.0 — 2026-11-05 (this release; the commit id is recorded in CURRENT_PROJECT_STATE.md)
 - **Installment schedules** (`lsched`, `schBox`):
   - the member profile shows the schedule, the next installment, the end month and the arrears;

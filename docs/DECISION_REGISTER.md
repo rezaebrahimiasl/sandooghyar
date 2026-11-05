@@ -33,3 +33,5 @@ An AI suggestion is never recorded as Approved.
 | D-25 | 2026-11-05 | Installment schedule derived (ADR-09); opening loans need the agreed monthly installment `m.qs` | Directed (D-19 asked for "accurate schedules") | ADR-09 | 0.47.0 |
 | D-26 | 2026-11-05 | Fund-health thresholds `FHT`: liquidity 3 %, loans to savings 95 % / 105 %, collection 90 % / 70 %, overdue 5 % / 15 %, dormant > 10 % = yellow | Directed; the owner may change them | `FHT` in source | 0.47.0 |
 | D-27 | 2026-11-05 | OneDrive backup of the docs | Pending — no OneDrive connector is available in this environment | — | no |
+| D-28 | 2026-11-05 | Consistent Jalali date-range filtering across reports and histories, combined with fund selection; comparison periods; historical vs current balances; part of the audit and release checklist | Approved (owner requirement 23:07 UTC) | FINANCIAL_RULES §11 | 0.48.0 |
+| D-29 | 2026-11-05 | Month-only records are counted in a range only when their whole month is inside it; partial months are excluded and counted, never guessed | Directed (engineering, D-28 requirement 7) | FINANCIAL_RULES §11 | 0.48.0 |

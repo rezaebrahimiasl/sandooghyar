@@ -12,6 +12,7 @@ The earlier detailed roadmap is `docs/13_ROADMAP.md`. This file is the current s
 | Provider-independent AI gateway, cash flow, liquidity and obligations forecast, loan portfolio, anomaly detection, AI management summary | 0.46.0 |
 | Report fund selection: one, several or all | 0.46.1 |
 | Multi-fund financial events, installment schedules, member profile and timeline, automatic reconciliation, fund health report, audit fixes | 0.47.0 |
+| Shared Jalali date-range filter with comparison, historical vs current balances | 0.48.0 |
 
 ## Pending — needs an owner decision or approval
 | Priority | Item | Ref |

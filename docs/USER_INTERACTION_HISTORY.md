@@ -115,3 +115,8 @@ Legend: **R** request · **D** decision or approval · **C** correction · **X**
   - 0.47.0 deployed from `fa1da94`; GitHub Pages deployment success;
   - two independent agent reviews held, and all their Critical and Major items fixed before publishing;
   - documentation system created (D-23).
+- **R/D** 23:07 — Additional requirement for the approved mission: a consistent Persian/Jalali date-range filtering system.
+  - Presets: today/yesterday, week, current/previous month, 3/6 months, current/previous year, all, custom.
+  - Applies to: events, schedules, overdue, profiles and timelines, statements, fund reports, injections and transfers, voided documents, reconciliation and audit.
+  - Must combine with fund selection, give consolidated and per-fund results, persist, use local Jalali boundaries, distinguish historical from current balances, use due and payment dates for overdue, never change data, compare two periods, and use shared logic.
+  - Tests for boundaries and leap Esfand are required, and the requirement is added to the audit and release checklist. → 0.48.0.
