@@ -15,8 +15,13 @@
 
 Financial calculation core (`bal`, `fsum`, `cashOf`, `jdocs`, `jopen`, `ybs`, `opsSum`, `icOf`) unchanged.
 
-## 2. Deferred: year-end closing entries (Q4)
-Not implemented — accounting policy undefined. Needed decisions:
+## 2. Year-end closing (Q4) — resolved in 0.45.0 by owner authorisation (standard practice, records preserved)
+- Policy 1: the year's net result (income − expenses) is closed into equity «مازاد/کسری انباشته».
+- Policy 2: permanent balances carry forward unchanged (cumulative ledgers); no new opening entries.
+- Policy 3: correction = reopen with reason (documents kept) → fix → close again (new document).
+- Implementation: `ycs`/`ycDoc`/`ycCard`. Presentation-only closing document in «ترازنامهٔ سالانه», derived from the journal; `yClose` stores the year result in the closing snapshot (`yc`); health `H-YCLOSE-RES` warns on later drift. No ledger re-posting; the financial core is unchanged. Test: `tests/yctest.js`.
+
+Original open questions (now answered as above):
 1. which equity account receives the year's net result (income − expenses);
 2. whether savings/loans/credit carry forward as opening documents or remain cumulative;
 3. reversal procedure after a posted closing.

@@ -3,7 +3,7 @@
 | Item | Value |
 |---|---|
 | Application | صندوق‌یار (SandooghYar): Qard al-Hasana fund manager, Persian offline PWA |
-| Version / build | **Published:** 0.42.0 = `main` @ `b29e7ab`. **Development (not released):** 0.44.0 on branch `stage2-idb` (uncommitted working tree): 0.43 durability (doc 11) + 0.44 package (doc 12). Docs 00–08 describe 0.40.1 unless a section says otherwise; docs 10–12 describe the later changes. |
+| Version / build | **Released:** 0.45.0 on `main` (0.44.0 = `c3e75a7`; recovery point 0.42.0 = `b29e7ab`): 0.43 durability (doc 11), 0.44 package + 0.45 year-end close (doc 12), roadmap (doc 13). Docs 00–08 describe 0.40.1 unless a section says otherwise; docs 10–12 describe the later changes. |
 | Documentation date | 2026-10-22 |
 | **Update** | Version **0.41.0** implements the R01 fixes FX-1…FX-5 (partial). See `10_R01_REMEDIATION_0.41.0.md`, which also corrects some statements in docs 00–09. Line numbers in docs 00–09 refer to 0.40.1. |
 | Documentation status | **Complete for the code base.** There are evidence gaps for device- and network-dependent behaviour (§4). |
@@ -97,5 +97,5 @@
 - [ ] `bal` iterates `bix().get(mid)`; `bixTouch` exists.
 - [ ] `rcpt` uses `balTx`; `rcptFind` resolves via `txv`.
 - [ ] `opSave` wraps `opSave0`; `OPREP` exists; `opView`/`opEdit` exist.
-- [ ] Unit tests: 28 suites (incl. `authtest.js`, `rcvtest.js`, `fintest.js`, `rsitest.js`, `idbtest.js`, `v44test.js`, `nostore.js`), all `FAIL 0`. 0.44 changes: doc 12. Smoke test: `errors []`. Browser regressions `recovery.js`, `idbfail.js`, `xlroundtrip.js`, `csp.js` pass on the public build.
+- [ ] Unit tests: 29 suites (incl. `authtest.js`, `rcvtest.js`, `fintest.js`, `rsitest.js`, `idbtest.js`, `v44test.js`, `nostore.js`, `yctest.js`), all `FAIL 0`. 0.44 changes: doc 12. Smoke test: `errors []`. Browser regressions `recovery.js`, `idbfail.js`, `xlroundtrip.js`, `csp.js` pass on the public build.
 - [ ] Synthetic scenario (doc 04) reproduces: month-0 cash 5, month-1 cash 18.8, with opening cash 14.8, capital balance 6, balance sheet balanced.
