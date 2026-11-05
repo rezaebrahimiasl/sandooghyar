@@ -16,7 +16,19 @@
   - 7 ledger checks per fund per month, plus recorded bank reconciliations;
   - errors appear in the alert centre.
 - **Fund health** (`fhealth`, `fhl`): 8 indicators with green, yellow and red lights.
-- **Independent audit and fixes:** see DEVELOPMENT_JOURNAL.md "0.47.0 audit".
+- **Independent audit and fixes:**
+  - yearly member balance for 1405;
+  - injection repayment checked against later months;
+  - negative credit and injection health checks;
+  - archived funds are read-only on every write path;
+  - AI masking normalises ي/ك;
+  - the cash-flow «سایر» column (net = change in cash);
+  - forecast refundable capital from the balance sheet;
+  - the shared bank account in reconciliation;
+  - no false arrears for transferred or voided loans;
+  - the reconciliation cache.
+
+  See DEVELOPMENT_JOURNAL.md.
 - **Portable project documentation system:** PROJECT_MASTER_CONTEXT.md and docs/*.
 - **Tests:** new `tests/v462test.js`.
 

@@ -28,12 +28,12 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 
 ## Tests (last full run on the 0.47.0 candidate)
 - `./runall.sh` on the release candidate (2026-11-05):
-  - **unit tests:** 31 suites, PASS 606 / FAIL 0;
+  - **unit tests:** 31 suites, PASS 613 / FAIL 0 (final, after the review fixes);
   - **build:** 0.47.0; privacy strip 1/1/1; CSP present;
-  - **browser tests:** smoke (no errors, offline reload ✓), recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp (0 violations, foreign host refused), upgrade 0.46.1→0.47.0 1/1, offline 16/16.
-- **Fresh-path check of the private package:** the build is byte-identical to `public/`; 31 suites PASS 606 / FAIL 0; 0 fixture-name leaks; no keys or tokens. Placeholders such as `github_pat_` in the UI hint and synthetic test phone numbers are expected.
+  - **browser tests:** smoke (no errors, offline reload ✓), recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp (0 violations, foreign host refused), upgrade from production 0.46.1 (`d44850f`) → 0.47.0 1/1 (run explicitly), offline 16/16.
+- **Fresh-path check of the private package:** the build is byte-identical to `public/`; 31 suites PASS 613 / FAIL 0; 0 fixture-name leaks; no keys or tokens. Placeholders such as `github_pat_` in the UI hint and synthetic test phone numbers are expected.
 - **Independent audit** (separate agent, synthetic data): 0 Critical, 3 Major, 4 Minor, 2 Cosmetic. All Major and five of the Minor/Cosmetic items are fixed; see DEVELOPMENT_JOURNAL.
-- **Independent review of the 0.47 changes:** @@REVIEW@@
+- **Independent review of the 0.47 changes:** a second separate agent found 0 Critical, 2 Major and 5 Minor issues; all are fixed and covered by tests (DEVELOPMENT_JOURNAL).
 - **Mobile check:** 390×800 Chromium; the new pages (fund health, reconciliation, multi-fund events, loan portfolio, member profile with schedule, timeline, forecast, reports) showed no JavaScript errors and no horizontal overflow; back navigation closed the sheet.
 - **Not tested:** a real Android device; real GitHub sync and real AI providers (mocked in the tests); a real IndexedDB failure on a phone; rollback to an older version.
 

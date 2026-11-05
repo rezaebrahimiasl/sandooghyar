@@ -60,3 +60,20 @@ The independent auditor ran its probes on synthetic data. It reported 0 Critical
 | notes | — | The `storage` event handler does not check `RCV`; there is no inter-fund mirror health check; `lastPay` ignores reclassifications; `reo` would fail on a cascade-locked month (not reachable from the UI) | **Known**, listed in CURRENT_PROJECT_STATE "Known issues". The reconciliation (`reconF`) covers ledger consistency. |
 
 Probe scripts are in the auditor's workspace (`/home/claude/audit046/scratch`, synthetic data). They are not shipped.
+
+### Independent review of the 0.47 changes — findings and dispositions
+A second agent, separate from the builder, reviewed only the 0.46.0 → 0.47.0 changes with synthetic probes. It reported 0 Critical, 2 Major and 5 Minor findings. It also confirmed that no new code writes financial data; the only exception is the audited `m.qs` editor `qsGo`.
+
+| # | Finding | Disposition |
+|---|---|---|
+| M1 | Reconciliation false alarm on a bank account shared by several funds: the recorded figure is the combined balance, but it was compared with each fund's share | **Fixed**: compares the sum over all sharing funds and reports once; covered by a test |
+| M2 | A loan balance received by transfer (xin/xout `bk:'loan'`) showed as arrears | **Fixed**: the schedule is marked unknown, so the estimate fallback is used; covered by a test |
+| m1 | Write paths still open for archived funds: `mcloseGo`, `succGo`, `rclVoidGo`, `qAddGo`, `depAdd`, `depRepGo` | **Fixed**: `arcNo` guard on each; covered by a test |
+| m2 | The reconciliation cache recomputed on every call (performance) | **Fixed**: the cache is keyed by state object and revision and holds every fund |
+| m3 | The cache could be stale after `S` was replaced at the same revision | **Fixed**: the cache is reset when the `S` object, revision or record counts change; covered by a test |
+| m4 | A voided loan produced false historical arrears in the schedule table | **Fixed**: voided loans and their `lrev` reversal enter the disbursement series; covered by a test |
+| m5 | The shared report selection did not reach the per-report selections after a restart | **Fixed**: `rgSync` at boot |
+| other | `ptl` with an unknown person threw | **Fixed**: guard. `fop` setting the working fund is intended. A missing term = 10 is the existing default. |
+
+- **Final run after these fixes:** 31 suites PASS 613 / FAIL 0. Browser: recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp OK, offline 16/16, smoke no errors.
+- **Upgrade check:** run explicitly from production 0.46.1 (`d44850f`) to 0.47.0 — PASS. Records, audit length, balances and cash are unchanged.
