@@ -3,7 +3,7 @@
 | Item | Value |
 |---|---|
 | Application | صندوق‌یار (SandooghYar): Qard al-Hasana fund manager, Persian offline PWA |
-| Version / build | `VER='0.40.1'`; public repo `rezaebrahimiasl/sandooghyar`, commit `afff760`; `version.json` = 0.40.1 |
+| Version / build | **Published:** 0.42.0 = `main` @ `b29e7ab`. **Development (not released):** 0.44.0 on branch `stage2-idb` (uncommitted working tree): 0.43 durability (doc 11) + 0.44 package (doc 12). Docs 00–08 describe 0.40.1 unless a section says otherwise; docs 10–12 describe the later changes. |
 | Documentation date | 2026-10-22 |
 | **Update** | Version **0.41.0** implements the R01 fixes FX-1…FX-5 (partial). See `10_R01_REMEDIATION_0.41.0.md`, which also corrects some statements in docs 00–09. Line numbers in docs 00–09 refer to 0.40.1. |
 | Documentation status | **Complete for the code base.** There are evidence gaps for device- and network-dependent behaviour (§4). |
@@ -88,7 +88,7 @@
 
 ## 6. Checklist: does this handover still match the code?
 
-- [ ] `grep "VER='" index.html` gives `0.40.1` and `git rev-parse --short HEAD` gives `afff760`. If not, line numbers may have shifted; re-run the function map.
+- [ ] `grep "VER='" index.html` gives `0.44.0` on branch `stage2-idb` (published `main` = `b29e7ab`, 0.42.0). Line numbers quoted in docs 00–08 refer to 0.40.1; re-run the function map before relying on them.
 - [ ] A regex count of named function definitions, `/(?:async\s+)?function\s+[A-Za-z_$][\w$]*\s*\(/g`, gives 681.
 - [ ] `index.html` contains `const D=[];`, `const REF=[];` and `CASH=[];`.
 - [ ] `KEY='sandooghyar.v2'`; IndexedDB name `sandooghyar`, store `kv`.
@@ -97,5 +97,5 @@
 - [ ] `bal` iterates `bix().get(mid)`; `bixTouch` exists.
 - [ ] `rcpt` uses `balTx`; `rcptFind` resolves via `txv`.
 - [ ] `opSave` wraps `opSave0`; `OPREP` exists; `opView`/`opEdit` exist.
-- [ ] Unit tests: 25 suites (incl. `authtest.js`, `rcvtest.js`, `fintest.js`, `rsitest.js`), all `FAIL 0`. Smoke test: `errors []`. Browser regressions `recovery.js`, `idbfail.js`, `xlroundtrip.js`, `csp.js` pass on the public build.
+- [ ] Unit tests: 28 suites (incl. `authtest.js`, `rcvtest.js`, `fintest.js`, `rsitest.js`, `idbtest.js`, `v44test.js`, `nostore.js`), all `FAIL 0`. 0.44 changes: doc 12. Smoke test: `errors []`. Browser regressions `recovery.js`, `idbfail.js`, `xlroundtrip.js`, `csp.js` pass on the public build.
 - [ ] Synthetic scenario (doc 04) reproduces: month-0 cash 5, month-1 cash 18.8, with opening cash 14.8, capital balance 6, balance sheet balanced.

@@ -10,7 +10,7 @@ There is **no database schema.** The app keeps one JavaScript object `S` in memo
 
 | Store | Name / key | Content | Written by |
 |---|---|---|---|
-| IndexedDB DB `sandooghyar` v1, object store `kv` | `sandooghyar.v2` | **Entire business state `S`** as JSON | `save()` L717 via `LS.setItem` |
+| IndexedDB DB `sandooghyar` v1, object store `kv` | `sandooghyar.v2` | **Entire business state `S`** as JSON | `save()` via `LS.setItem` — since 0.43.0 a durable, generation-aware write queue (see doc 11) |
 | same | `sandooghyar.v2.cfg` | Device settings `CFG` (JSON) | `cfgSave()` L712 |
 | same | `sandooghyar.v2.s1`, `.s2`, `.s3` | Rolling snapshots `{at, rev, json, label}`. `s1` is newest. Taken at boot if older than 6 h and every 25 saves. | `snapshot`/`snapObj` L724–725 |
 | same | `sandooghyar.v2.corrupt` | Raw JSON that failed to parse or validate at load | `load()` L80 |
@@ -174,7 +174,7 @@ A copy of the tx plus `vr` (reason) and `vat` (time). Created by `txVoid(L,why)`
 
 | Collection | Fields | Notes |
 |---|---|---|
-| `deps[]` — واریزی اعلام‌شده | `{id:'D…', fid, mid, name, amt, date, ca, trk, note, at, al:[{tx, a}], void, vr}` | `depRem(d) = amt − Σal.a` |
+| `deps[]` — واریزی اعلام‌شده | `{id:'D…', fid, mid, name, amt, date, ca, trk, note, at, al:[{tx, a}], void, vr, rto?, prev?, rno?, rv?}` (0.44: correction = void + replacement) | `depRem(d) = amt − Σal.a` |
 | `review[]` — موارد بررسی | `{id:'R…', kind, fid, mid, per, status:'نیازمند بررسی'\|'اصلاح‌شده'\|'تأییدشده', src:{sheet, cell, excel}, app, msg, res, resNote}` | Effective status is derived live (`rvSt` L524). Items with `src.sheet:'1405'` («مانده صندوق منفی در اکسل», «مغایرت مانده وام با ستون اکسل», …) are [EXCEL-HIST] notes about the workbook, not findings about current data. |
 | `audit[]` | `{t:ISO, a:action, d:detail, h:fnv-hash}` | Newest first (`unshift`); hash chained to the previous `h` |
 | `opens[]` | `{id:'D…', fid, date, reason, at, items}` | Opening-balance change documents (`applyOpening` L829) |
