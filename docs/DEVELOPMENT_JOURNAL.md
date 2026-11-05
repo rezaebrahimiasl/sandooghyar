@@ -17,7 +17,8 @@ Unless noted, the executor is **Claude (Claude Code, cloud workspace)**. Dates a
 | 2026-11-05 | 0.46.0 AI gateway + analysis (`750ac84`) | 30 suites PASS 549 / FAIL 0; browser 35 PASS lines, 0 FAIL |
 | 2026-11-05 | Handover package 0.46.0 (no code change) | Verified from a fresh path: build byte-identical; 549/0 |
 | 2026-11-05 | 0.46.1 shared report fund selection (`d44850f`) | 30 suites PASS 563 / FAIL 0; browser 0 FAIL; upgrade 0.46.0→0.46.1 PASS |
-| 2026-11-05 | 0.47.0 mission | See below |
+| 2026-11-05 | 0.47.0 mission (`fa1da94`) | See below |
+| 2026-11-06 | 0.48.0 date-range filtering | See below |
 
 ## 0.47.0 mission (2026-11-05, approved D-19)
 
@@ -77,3 +78,37 @@ A second agent, separate from the builder, reviewed only the 0.46.0 → 0.47.0 c
 
 - **Final run after these fixes:** 31 suites PASS 613 / FAIL 0. Browser: recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp OK, offline 16/16, smoke no errors.
 - **Upgrade check:** run explicitly from production 0.46.1 (`d44850f`) to 0.47.0 — PASS. Records, audit length, balances and cash are unchanged.
+
+## 0.48.0 — shared Jalali date-range filtering (D-28)
+
+| Stage | Change |
+|---|---|
+| s67 | Engine (`dfRng`, `dfHit`, `dfF`, `dfAsOf`, `dfMonths`, `dfCmpR`, `dfBar`), applied to 11 pages; `tests/v48test.js` |
+| s68 | Fixes from the independent review |
+
+**Independent review** (separate agent; calendar verified 1395–1410 and against `Intl` 2016–2032): 5 Major and 9 Minor findings.
+
+| # | Finding | Disposition |
+|---|---|---|
+| M1 | The statement's opening + rows did not equal the closing balance when the range started mid-month | **Fixed**: opening and closing balances are shown only for whole-month ranges (rows by accounting month). A mid-month range shows dated rows only, with an explanation. |
+| M2 | The cash-flow comparison was meaningless for sub-month ranges | **Fixed**: comparison only for whole-month ranges, with a note |
+| M3 | `fop` and the forecast page crashed with no active funds and a range set (regression) | **Fixed**: guards; covered by a test |
+| M4 | The printed output did not show the period | **Fixed**: the range label is printable |
+| M5 | The shared filter silently affected other reports | **Fixed**: every filtered page shows an active-filter label stating it applies to all reports, plus a one-tap «حذف فیلتر تاریخ» |
+
+**Minor fixes:**
+- year-on-year comparison maps month-end to month-end (Esfand 29 ↔ leap 30);
+- void time `vat` is now recorded on fund-event and deposit voids (legacy voids use their creation time, and the page says so);
+- local day computed by Gregorian arithmetic (`gJ`) instead of a new `Intl` formatter per call, which is faster and works on old WebViews; matches `Intl` for every day from 2016 to 2032;
+- profile rows that are always current are labelled «فعلی»;
+- the capital ledger warns about partial months;
+- open-range wording;
+- dead code removed;
+- the assistant summary is labelled as current state.
+
+**Final run:**
+- 32 suites PASS 672 / FAIL 0;
+- browser: recovery 9, idbfail 3, idbdur 5, syncinteg 1, offline 16, xlroundtrip ndiff 0, csp OK, smoke no errors;
+- explicit upgrade from production 0.47.0 → 0.48.0 PASS.
+
+**Mobile check (390 px):** filtered pages render with no errors and no horizontal overflow.
