@@ -111,3 +111,7 @@ Legend: **R** request · **D** decision or approval · **C** correction · **X**
 - **X** The same message excluded from this mission: multilingual support, encryption, domain separation, one-touch messaging and scenario forecasting.
 - **D** The same message authorized commit, merge and deployment, with the condition: do not publish if a critical financial defect remains.
 - **D** 18:55 (mid-task) — **Permanent portable project memory and documentation system.** This file is part of it.
+- **D** 19:20 — Engineering result:
+  - 0.47.0 deployed from `fa1da94`; GitHub Pages deployment success;
+  - two independent agent reviews held, and all their Critical and Major items fixed before publishing;
+  - documentation system created (D-23).

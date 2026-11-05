@@ -4,7 +4,11 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 
 ## Versions and commits
 - **Production version:** 0.47.0
-- **Release commit (app + docs):** `@@REL@@`
+- **Release commits:**
+  - `203729c` — 0.47.0 app + docs;
+  - `a80be83` — docs;
+  - `fa1da94` — review fixes. This is the deployed app commit.
+  - Later commits on `main` are documentation only.
 - **Previous releases:**
   - 0.46.1 `d44850f`
   - 0.46.0 `750ac84`
@@ -23,7 +27,11 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 ## Deployment
 - **Hosting:** GitHub Pages, from `main` at the repo root; `.nojekyll` is present.
 - **URL:** https://rezaebrahimiasl.github.io/sandooghyar/
-- **Verification:** @@DEPLOY@@
+- **Verification (2026-11-05 19:20 UTC):**
+  - GitHub Actions run 42092888490 («pages build and deployment», head `fa1da94`): completed / **success**.
+  - Deployment 7583058467, environment `github-pages`, status **success**, URL https://rezaebrahimiasl.github.io/sandooghyar/.
+  - `version.json` on `main` = 0.47.0.
+  - Fetching the live github.io URL directly was blocked from the build environment, so the served bytes were not read back.
 - **On phones:** an installed app picks up the new version through `version.json` / `upd()` the next time it opens online.
 
 ## Tests (last full run on the 0.47.0 candidate)
@@ -40,10 +48,15 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 ## Packages
 | Package | SHA-256 |
 |---|---|
-| `sandooghyar-private-0.47.0.zip` (dev source with pseudonymised fixture, tests, tools, docs, public build) | `3debca38d07ecd6c1f429225a0d6e8bd3c1c1bcb646ad945c2e23808cccaeb42` |
-| `sandooghyar-public-0.47.0.zip` (exactly the published files) | `cfd1959e31e76c54ead1305f033392ac5f56513ac38e5b37e11ea9a3c12b66a5` |
+| `sandooghyar-private-0.47.0.zip` (dev source with pseudonymised fixture, tests, tools, docs, public build) | `4e79a4883a4cb9e9b8f99c08a9f078faf3c9d87655f97d8678d06145a384cafe` |
+| `sandooghyar-public-0.47.0.zip` (exactly the published files) | `bf64c301e11ee59f62c6f3687d1d57dc2e6d99c56a6a55d4864bc1622502caa6` |
 
-Each package contains `SHA256SUMS.txt` for its files. The packages were built before the final docs-only commit, so their docs may lack the deployment line; the repo is authoritative for the docs.
+- Each package contains `SHA256SUMS.txt` for its files.
+- The packages were built from deployed commit `fa1da94` and checked from a fresh path:
+  - `index.html` and `sw.js` are byte-identical to the deployed files;
+  - 31 suites PASS 613 / FAIL 0.
+- Docs committed after the packages, such as this deployment section, are authoritative in the repo.
+- **OneDrive mirror:** not available. No OneDrive connection exists in the build environment (D-27).
 
 ## Known issues and limitations
 - At-rest encryption on the phone is not implemented (design only, D-21).
