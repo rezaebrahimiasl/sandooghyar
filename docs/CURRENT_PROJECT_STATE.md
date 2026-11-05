@@ -27,14 +27,23 @@ Last verified: **2026-11-05**, against Git, the source and the test runs listed 
 - **On phones:** an installed app picks up the new version through `version.json` / `upd()` the next time it opens online.
 
 ## Tests (last full run on the 0.47.0 candidate)
-- @@TESTS@@
+- `./runall.sh` on the release candidate (2026-11-05):
+  - **unit tests:** 31 suites, PASS 606 / FAIL 0;
+  - **build:** 0.47.0; privacy strip 1/1/1; CSP present;
+  - **browser tests:** smoke (no errors, offline reload ✓), recovery 9/9, idbfail 3/3, idbdur 5/5, syncinteg 1/1, xlroundtrip ndiff 0, csp (0 violations, foreign host refused), upgrade 0.46.1→0.47.0 1/1, offline 16/16.
+- **Fresh-path check of the private package:** the build is byte-identical to `public/`; 31 suites PASS 606 / FAIL 0; 0 fixture-name leaks; no keys or tokens. Placeholders such as `github_pat_` in the UI hint and synthetic test phone numbers are expected.
 - **Independent audit** (separate agent, synthetic data): 0 Critical, 3 Major, 4 Minor, 2 Cosmetic. All Major and five of the Minor/Cosmetic items are fixed; see DEVELOPMENT_JOURNAL.
 - **Independent review of the 0.47 changes:** @@REVIEW@@
 - **Mobile check:** 390×800 Chromium; the new pages (fund health, reconciliation, multi-fund events, loan portfolio, member profile with schedule, timeline, forecast, reports) showed no JavaScript errors and no horizontal overflow; back navigation closed the sheet.
 - **Not tested:** a real Android device; real GitHub sync and real AI providers (mocked in the tests); a real IndexedDB failure on a phone; rollback to an older version.
 
 ## Packages
-@@PKG@@
+| Package | SHA-256 |
+|---|---|
+| `sandooghyar-private-0.47.0.zip` (dev source with pseudonymised fixture, tests, tools, docs, public build) | `3debca38d07ecd6c1f429225a0d6e8bd3c1c1bcb646ad945c2e23808cccaeb42` |
+| `sandooghyar-public-0.47.0.zip` (exactly the published files) | `cfd1959e31e76c54ead1305f033392ac5f56513ac38e5b37e11ea9a3c12b66a5` |
+
+Each package contains `SHA256SUMS.txt` for its files. The packages were built before the final docs-only commit, so their docs may lack the deployment line; the repo is authoritative for the docs.
 
 ## Known issues and limitations
 - At-rest encryption on the phone is not implemented (design only, D-21).
