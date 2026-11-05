@@ -23,3 +23,15 @@ Also open:
 - SRI/vendoring (steps in docs/12 §4);
 - real-device and real-network tests;
 - comparing the Mehr data file once it is supplied.
+
+## Status in 0.46.0
+
+| Priority | Status |
+|---|---|
+| 1 | **Done (read-only).** A provider-independent gateway, `AIPROV` (Gemini, OpenAI, OpenRouter), behind a single `aiCall`. `aiInsight` writes a management summary from `finSum`, which carries aggregates only (no names or ids). The assistant has no write authority. The CSP allows only the three provider hosts. |
+| 2 | **Done (deterministic).** `fcst`: 6-month cash projection per fund. Savings are projected at the 3-month average; installments use `sugg`, capped at the outstanding balance. Also shows queue obligations with a months-to-cover estimate, member credit, refundable capital and suspense. The page `fcst` adds a 6-month cash-flow table from `cflow`. |
+| 3 | **Done (rules).** `anomList` flags: duplicates (same member, type, month and amount); amounts above 3× the member's median (needs ≥4 history entries); overdue (≥3 months without an installment while a loan is open); negative cash. Thresholds live in `ANOM`. The page is `anom`, and the alert centre carries a summary line. Optional AI ranking is not done. |
+| 4 | **Partly done.** Fixed loan-portfolio report `lport`: buckets current, late and overdue, with a per-loan last-installment and months-without-installment table, printable. Saved custom report definitions (`S.rep`) are not done. |
+| 5 | **(c) is done** (the adapter gateway). (a) and (b) stay open: they belong to the separate Miz-Kar project, or need domain migration and a decision. |
+
+The new features are grouped under module `ins` (on/off in the modules settings). Tests: `tests/v46test.js` (33 checks).

@@ -1,5 +1,5 @@
 // صندوق‌یار — service worker. User data lives in IndexedDB and is never touched here.
-const APP='sandooghyar',V=APP+'-v0.45.0',SHELL=APP+'-shell',RT=APP+'-share';
+const APP='sandooghyar',V=APP+'-v0.46.0',SHELL=APP+'-shell',RT=APP+'-share';
 const ASSETS=['./','index.html','manifest.webmanifest','icon-192.png','icon-512.png','icon-maskable-512.png'];
 const IDX=()=>new URL('index.html',self.registration.scope).href;
 // Cache Storage is shared by every app on this origin and another app's worker may delete it; keep a last-good copy of the page in our own IndexedDB too.
